@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="975fa041-204d-43a7-b192-defdacaf2eeb" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/0-pascal_triangle.py" beforeDir="false" afterPath="$PROJECT_DIR$/0-pascal_triangle.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/0-main.py" beforeDir="false" afterPath="$PROJECT_DIR$/0-main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +75,7 @@
       <option name="presentableId" value="Default" />
       <updated>1688530049791</updated>
       <workItem from="1688530051170" duration="735000" />
-      <workItem from="1688551939418" duration="660000" />
+      <workItem from="1688551939418" duration="742000" />
     </task>
     <servers />
   </component>
