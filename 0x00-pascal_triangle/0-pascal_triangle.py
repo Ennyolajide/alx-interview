@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Pascal Triangle Interview Challenge"""
+from typing import Union, List, Any
 
 
 def pascal_triangle(n):
@@ -12,12 +13,13 @@ def pascal_triangle(n):
 
     for i in range(n):
         # define a row and fill first and last idx with 1
-        new_row = [0] * (i+1)
+        new_row = [0] * (i + 1)
         new_row[0] = 1
         new_row[len(new_row) - 1] = 1
 
+        j: int
         for j in range(1, i):
-            if j > 0 and j < len(new_row):
+            if 0 < j < len(new_row):
                 a = pascal_triangle[i - 1][j]
                 b = pascal_triangle[i - 1][j - 1]
                 new_row[j] = a + b
