@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+"""Pascal Triangle Interview Challenge"""
+
 def pascal_triangle(n):
     if n <= 0:
         return []
