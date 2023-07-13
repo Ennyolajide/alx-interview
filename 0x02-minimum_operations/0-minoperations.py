@@ -17,7 +17,7 @@ def minOperations(n):
 
     op = 0
     i = 2
-    while (i <= n):
+    while i <= n:
         if not (n % i):
             n = int(n / i)
             op += i
