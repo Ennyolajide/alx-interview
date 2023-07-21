@@ -1,44 +1,45 @@
 #!/usr/bin/python3
-""" script that reads stdin line by line and computes metrics """
+""" Script that reads stdin line by line and computes metrics """
 
 import sys
 
 
-def printsts(dic, size):
+def print_statistics(status_code_counts, total_file_size):
     """ Prints information """
-    print("File size: {:d}".format(size))
-    for i in sorted(dic.keys()):
-        if dic[i] != 0:
-            print("{}: {:d}".format(i, dic[i]))
+    print("File size: {:d}".format(total_file_size))
+    for status_code, count in sorted(status_code_counts.items()):
+        if count != 0:
+            print("{}: {:d}".format(status_code, count))
 
 
-sts = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
-       "404": 0, "405": 0, "500": 0}
-
-count = 0
-size = 0
+status_code_counts = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0, "404": 0, "405": 0, "500": 0}
+line_count = 0
+total_file_size = 0
 
 try:
     for line in sys.stdin:
-        if count != 0 and count % 10 == 0:
-            printsts(sts, size)
+        line_count += 1
 
-        stlist = line.split()
-        count += 1
+        if line_count % 10 == 0:
+            print_statistics(status_code_counts, total_file_size)
+
+        split_line = line.split()
 
         try:
-            size += int(stlist[-1])
-        except:
+            file_size = int(split_line[-1])
+            total_file_size += file_size
+        except ValueError:
             pass
 
         try:
-            if stlist[-2] in sts:
-                sts[stlist[-2]] += 1
-        except:
+            status_code = split_line[-2]
+            if status_code in status_code_counts:
+                status_code_counts[status_code] += 1
+        except IndexError:
             pass
-    printsts(sts, size)
 
+    print_statistics(status_code_counts, total_file_size)
 
 except KeyboardInterrupt:
-    printsts(sts, size)
+    print_statistics(status_code_counts, total_file_size)
     raise
