@@ -1,46 +1,44 @@
 #!/usr/bin/python3
+""" script that reads stdin line by line and computes metrics """
 
 import sys
 
-def print_statistics(status_code_counts, total_file_size):
-    print("File size:", total_file_size)
-    for status_code, count in sorted(status_code_counts.items()):
-        if count != 0:
-            print(f"{status_code}: {count}")
 
-def main():
-    total_file_size = 0
-    status_code_counts = {
-        200: 0,
-        301: 0,
-        400: 0,
-        401: 0,
-        403: 0,
-        404: 0,
-        405: 0,
-        500: 0
-    }
+def printsts(dic, size):
+    """ Prints information """
+    print("File size: {:d}".format(size))
+    for i in sorted(dic.keys()):
+        if dic[i] != 0:
+            print("{}: {:d}".format(i, dic[i]))
 
-    try:
-        counter = 0
-        for line in sys.stdin:
-            parsed_line = line.split()
-            if len(parsed_line) >= 10:
-                counter += 1
 
-                total_file_size += int(parsed_line[-1])  # file size
-                code = int(parsed_line[-2])  # status code
+sts = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
+       "404": 0, "405": 0, "500": 0}
 
-                if code in status_code_counts:
-                    status_code_counts[code] += 1
+count = 0
+size = 0
 
-                if counter == 10:
-                    print_statistics(status_code_counts, total_file_size)
-                    counter = 0
+try:
+    for line in sys.stdin:
+        if count != 0 and count % 10 == 0:
+            printsts(sts, size)
 
-    except KeyboardInterrupt:
-        print_statistics(status_code_counts, total_file_size)
-        sys.exit(0)
+        stlist = line.split()
+        count += 1
 
-if __name__ == "__main__":
-    main()
+        try:
+            size += int(stlist[-1])
+        except:
+            pass
+
+        try:
+            if stlist[-2] in sts:
+                sts[stlist[-2]] += 1
+        except:
+            pass
+    printsts(sts, size)
+
+
+except KeyboardInterrupt:
+    printsts(sts, size)
+    raise
