@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 import sys
 
 def parse_line(line):
@@ -11,7 +10,7 @@ def parse_line(line):
     return status_code, file_size
 
 def print_statistics(total_size, status_code_counts):
-    print("File size:", total_size)
+    print("Total file size:", total_size)
     for status_code in sorted(status_code_counts.keys()):
         print(f"{status_code}: {status_code_counts[status_code]}")
 
