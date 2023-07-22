@@ -27,10 +27,6 @@ line_count = 0
 try:
     for line in sys.stdin:
         line_count += 1
-
-        if line_count % 10 == 0:
-            print_statistics(status_code_counts, total_file_size)
-
         parsed_line = line.strip().split()
 
         if len(parsed_line) == 7:
@@ -44,8 +40,11 @@ try:
             except ValueError:
                 pass
 
+        if line_count % 10 == 0:
+            print_statistics(status_code_counts, total_file_size)
+            line_count = 0
+            total_file_size = 0
+
 except KeyboardInterrupt:
     print_statistics(status_code_counts, total_file_size)
     sys.exit(0)
-
-print_statistics(status_code_counts, total_file_size)
