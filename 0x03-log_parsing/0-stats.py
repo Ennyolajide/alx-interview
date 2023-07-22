@@ -1,60 +1,48 @@
 #!/usr/bin/python3
+"""
+log parsing
+"""
 
 import sys
+import re
 
 
-def print_statistics(status_code_counts, total_file_size):
-    """Prints the statistics"""
-    print("File size:", total_file_size)
-    for status_code, count in sorted(status_code_counts.items()):
-        if count != 0:
-            print(f"{status_code}: {count}")
+def output(log: dict) -> None:
+    """
+    helper function to display stats
+    """
+    print("File size: {}".format(log["file_size"]))
+    for code in sorted(log["code_frequency"]):
+        if log["code_frequency"][code]:
+            print("{}: {}".format(code, log["code_frequency"][code]))
 
 
-status_code_counts = {
-    200: 0,
-    301: 0,
-    400: 0,
-    401: 0,
-    403: 0,
-    404: 0,
-    405: 0,
-    500: 0
-}
-total_file_size = 0
-line_count = 0
+if __name__ == "__main__":
+    regex = re.compile(
+    r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3} - \[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d+\] "GET /projects/260 HTTP/1.1" (.{3}) (\d+)')  # nopep8
 
-try:
-    for line in sys.stdin:
-        line_count += 1
-        parsed_line = line.strip().split()
+    line_count = 0
+    log = {"file_size": 0, "code_frequency": {
+        str(code): 0 for code in [
+            200, 301, 400, 401, 403, 404, 405, 500]}}
 
-        if len(parsed_line) == 7:
-            try:
-                status_code = int(parsed_line[-2])
-                file_size = int(parsed_line[-1])
-                total_file_size += file_size
+    try:
+        for line in sys.stdin:
+            line = line.strip()
+            match = regex.fullmatch(line)
+            if match:
+                line_count += 1
+                code = match.group(1)
+                file_size = int(match.group(2))
 
-                if status_code in status_code_counts:
-                    status_code_counts[status_code] += 1
-            except ValueError:
-                pass
+                # File size
+                log["file_size"] += file_size
 
-        if line_count % 10 == 0:
-            print_statistics(status_code_counts, total_file_size)
-            status_code_counts = {  # Reset the dictionary
-                200: 0,
-                301: 0,
-                400: 0,
-                401: 0,
-                403: 0,
-                404: 0,
-                405: 0,
-                500: 0
-            }
-            total_file_size = 0
+                # status code
+                if code.isdecimal():
+                    log["code_frequency"][code] += 1
 
-except KeyboardInterrupt:
-    print_statistics(status_code_counts, total_file_size)
-    sys.exit(0)
-
+                if line_count % 10 == 0:
+                    output(log)
+    finally:
+        output(log)
