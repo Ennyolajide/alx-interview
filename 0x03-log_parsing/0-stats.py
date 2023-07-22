@@ -11,42 +11,37 @@ def print_statistics(status_code_counts, total_file_size):
             print(f"{status_code}: {count}")
 
 
-def main():
-    status_code_counts = {
-        200: 0,
-        301: 0,
-        400: 0,
-        401: 0,
-        403: 0,
-        404: 0,
-        405: 0,
-        500: 0
-    }
-    total_file_size = 0
-    line_count = 0
+status_code_counts = {
+    200: 0,
+    301: 0,
+    400: 0,
+    401: 0,
+    403: 0,
+    404: 0,
+    405: 0,
+    500: 0
+}
+total_file_size = 0
+line_count = 0
 
-    try:
-        for line in sys.stdin:
-            line_count += 1
+try:
+    for line in sys.stdin:
+        line_count += 1
 
-            if line_count % 10 == 0:
-                print_statistics(status_code_counts, total_file_size)
+        if line_count % 10 == 0:
+            print_statistics(status_code_counts, total_file_size)
 
-            parsed_line = line.strip().split()
-            if len(parsed_line) == 7:
-                status_code = int(parsed_line[-2])
-                file_size = int(parsed_line[-1])
-                total_file_size += file_size
+        parsed_line = line.strip().split()
+        if len(parsed_line) == 7:
+            status_code = int(parsed_line[-2])
+            file_size = int(parsed_line[-1])
+            total_file_size += file_size
 
-                if status_code in status_code_counts:
-                    status_code_counts[status_code] += 1
+            if status_code in status_code_counts:
+                status_code_counts[status_code] += 1
 
-    except KeyboardInterrupt:
-        print_statistics(status_code_counts, total_file_size)
-        sys.exit(0)
-
+except KeyboardInterrupt:
     print_statistics(status_code_counts, total_file_size)
+    sys.exit(0)
 
-
-if __name__ == "__main__":
-    main()
+print_statistics(status_code_counts, total_file_size)
