@@ -32,13 +32,17 @@ try:
             print_statistics(status_code_counts, total_file_size)
 
         parsed_line = line.strip().split()
-        if len(parsed_line) == 7:
-            status_code = int(parsed_line[-2])
-            file_size = int(parsed_line[-1])
-            total_file_size += file_size
 
-            if status_code in status_code_counts:
-                status_code_counts[status_code] += 1
+        if len(parsed_line) == 7:
+            try:
+                status_code = int(parsed_line[-2])
+                file_size = int(parsed_line[-1])
+                total_file_size += file_size
+
+                if status_code in status_code_counts:
+                    status_code_counts[status_code] += 1
+            except ValueError:
+                pass
 
 except KeyboardInterrupt:
     print_statistics(status_code_counts, total_file_size)
