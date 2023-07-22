@@ -2,12 +2,14 @@
 
 import sys
 
+
 def print_statistics(status_code_counts, total_file_size):
     """Prints the statistics"""
     print("File size:", total_file_size)
     for status_code, count in sorted(status_code_counts.items()):
         if count != 0:
             print(f"{status_code}: {count}")
+
 
 def main():
     status_code_counts = {
@@ -56,6 +58,7 @@ def main():
     except KeyboardInterrupt:
         print_statistics(status_code_counts, total_file_size)
         sys.exit(0)
+
 
 if __name__ == "__main__":
     main()
